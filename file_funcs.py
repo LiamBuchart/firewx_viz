@@ -25,7 +25,7 @@ def execute_command(command):
         output, error = process.communicate()
 
         output = output.decode("utf-8")
-        error = output.decode("utf-8")
+        error = error.decode("utf-8")
 
         return output, error
     

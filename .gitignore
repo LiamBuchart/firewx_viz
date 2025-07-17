@@ -1,0 +1,6 @@
+# any and all MSC files - dont need to have those
+*MSC*
+*RDPS*
+
+# pycache
+*pycache*
