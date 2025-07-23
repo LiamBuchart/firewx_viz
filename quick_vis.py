@@ -11,6 +11,7 @@
 import xarray as xr
 import cfgrib
 import matplotlib.pyplot as plt
+import os
 
 from pathlib import Path
 
@@ -27,10 +28,25 @@ fcst_hr = "008"
 ##### END USER DEFINED VARIABLES #####
 
 # define the path to the data
-data_path = str(Path.cwd()) + "/" + data_dir + "/" + year + month + day + "/" + model_run + "/"
-data_file = f"{year}{month}{day}_T{model_run}_MSC_{data_dir}_{vis_var}_RLatLon0.09_PT{fcst_hr}H.grib2"
-print(data_path + "    "  + data_file)
+data_file = f"\\{year}{month}{day}T{model_run}Z_MSC_{data_dir}_{vis_var}_RLatLon0.09_PT{fcst_hr}H.grib2"
+p = Path(data_dir).resolve()
+sp = Path(save_dir).resolve()
+print(str(sp))
+full_data = str(p) + data_file
 
-ds = xr.load_dataset(data_path + data_file, engine="cfgrib")
+if os.path.exists(full_data):
+    ds = xr.open_dataset(full_data, engine="cfgrib")
 
-print(ds)
+    lats = ds.latitude.values
+    lons = ds.longitude.values
+
+    fig = plt.figure(figsize=(12,12))
+    if vis_var == "RelativeHumidity_AGL-2m":
+        rh2 = ds['r2']
+
+        print(rh2.attrs)
+        rh2.plot()
+        plt.savefig(str(sp) + f"{vis_var}_easyplot.png")
+
+
+print("Done m'lord")
