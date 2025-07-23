@@ -7,14 +7,16 @@
     July 17, 2025
 
 """
-
-import xarray as xr
-import cfgrib
+#%%
+import numpy as np
+import xarray as xr 
+import matplotlib
 import matplotlib.pyplot as plt
 import os
 
 from pathlib import Path
 
+#%%
 ##### USER DEFINED VARIABLES #####
 data_dir = "RDPS"
 save_dir = "/FIGURES/"
@@ -34,19 +36,28 @@ sp = Path(save_dir).resolve()
 print(str(sp))
 full_data = str(p) + data_file
 
+
+# %%
+"""
+Script to plot a 2D image of the first time slice of r2 from the data_file
+"""
 if os.path.exists(full_data):
-    ds = xr.open_dataset(full_data, engine="cfgrib")
+    ds = xr.open_dataset(full_data, engine="cfgrib", backend_kwargs={'indexpath': ''})
+    rh2 = ds['r2']
+    # Select the first time slice if time is a dimension
+    if 'time' in rh2.dims:
+        data2d = rh2.isel(time=0).values
+    else:
+        data2d = rh2.values
+    plt.figure(figsize=(10,8))
+    im = plt.imshow(data2d, aspect='auto', origin='lower')
+    plt.title('2D Image of r2 (first time slice)')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.colorbar(im, label='r2 value')
+    plt.tight_layout()
+    plt.show()
+    
+print("Plotting complete.")
 
-    lats = ds.latitude.values
-    lons = ds.longitude.values
-
-    fig = plt.figure(figsize=(12,12))
-    if vis_var == "RelativeHumidity_AGL-2m":
-        rh2 = ds['r2']
-
-        print(rh2.attrs)
-        rh2.plot()
-        plt.savefig(str(sp) + f"{vis_var}_easyplot.png")
-
-
-print("Done m'lord")
+# %%
