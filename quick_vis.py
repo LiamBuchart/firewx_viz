@@ -61,3 +61,34 @@ if os.path.exists(full_data):
 print("Plotting complete.")
 
 # %%
+rh2.isel(x=[-130, -115, -100]).plot(y="latitude", hue="x")
+#%%
+rh2.isel(x=[-130, -115, -100]).plot(y="y", hue="x")
+
+#%%
+rh2.isel(y=[0, 30, 60, 90]).plot(x="longitude", hue="y")
+
+#%%
+rh2.T.plot.surface()
+
+# %%
+rh_gro = rh2.mean().groupby_bins("latitude", [0, 30, 60, 90]).mean()
+rh_mn = rh2.mean()
+rh_std = rh2.std()
+rh_mn.plot.step()
+(rh_mn + rh_std).plot.step(ls=":")
+(rh_mn - rh_std).plot.step(ls=":")
+plt.title('Zonal Mean Relative Humidity')
+
+# %%
+print(ds.longitude.attrs)
+print(ds.latitude.attrs)
+
+#%%
+lat_bins = np.arange(0, 81, 2)
+lat_center = np.arange(1, 80, 2)
+
+rh2_lat_mean = ds.r2.groupby_bins('latitude', 
+                    lat_bins, labels=lat_center).mean()
+rh2_lat_mean.plot.line()
+# %%
