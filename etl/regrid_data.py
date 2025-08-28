@@ -38,10 +38,10 @@ def create_target_grid(lat_range, lon_range, resolution):
     {
         "lat": (["lat"], lat, {"units": "degrees_north"}),
         "lon": (["lon"], lon, {"units": "degrees_east"}),
-    }
+    })
 
     return ds_out
-)
+
 
 def regrid_data(ds, target_grid):
     """
@@ -54,7 +54,7 @@ def regrid_data(ds, target_grid):
     Returns:
     xarray.Dataset: The regridded dataset.
     """
-    regridder = xe.Regridder(ds, target_grid, 'bilinear')
+    regridder = xe.Regridder(ds, target_grid, 'convservative')
     regridded_ds = regridder(ds)
     return regridded_ds
 

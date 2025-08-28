@@ -60,6 +60,9 @@ if os.path.exists(full_data):
     
 print("Plotting complete.")
 
+#%%
+print(ds.coords)
+
 # %%
 rh2.isel(x=[-130, -115, -100]).plot(y="latitude", hue="x")
 #%%

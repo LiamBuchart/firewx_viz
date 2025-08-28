@@ -17,7 +17,7 @@ import cartopy.feature as cfeature
 from cartopy import crs as ccrs
 from pathlib import Path
 
-from regrid_data import regrid_data, canada_ten_km
+from etl.regrid_data import regrid_data, canada_ten_km
 
 ##### USER DEFINED VARIABLES #####
 data_dir = "RDPS"
