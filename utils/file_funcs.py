@@ -28,4 +28,6 @@ def file_paths(link, variable):
     forecast_hours = [x for x in range(0, 49, 3)]
 
     # initialize a dataframe to hold the file paths
+    full_paths = pd.DataFrame(columns=["full_path", "forecast_hour", "variable"])
 
+    
