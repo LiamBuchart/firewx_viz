@@ -14,16 +14,17 @@ import numpy as np
 import os
 import json
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # set the month and year to take the average of
-month = [1, 2]  # np.arange(1, 12)
+month = np.arange(1, 12+1)
 year = 1990
 
 save_dir = "./climatology"
 data_dir = "./temp/"
 
 # get the stinky variable names that casr uses - dont need to type them out here
-with open("variables.json", 'r') as f:
+with open("./utils/variables.json", 'r') as f:
     casr_vars = json.load(f)
 
 def month_mean(da1, da2):
@@ -62,17 +63,12 @@ for mm in month:
             # wind speed
             ws_da = ds[casr_vars["CaSR_Variables"]["wind_speed"]] 
             ws_da_km = ws_da * 1.852  # convert to km/h from kts
-            #ws_da = ws_da.expand_dims(time=timestamp)
 
             # wind run
             wr_da = ws_da  # just copy for now
-            # wr_da = ds[casr_vars["CaSR_Variables"]["wind_speed"]] 
-            # wr_da = wr_da.values * 1.852 * 24  # km/h * 24 hrs/day = km/day
-            #wr_da = wr_da.expand_dims(time=timestamp)
 
             # wind direction
             wd_da = ds[casr_vars["CaSR_Variables"]["wind_direction"]]
-            #wd_da = wd_da.expand_dims(time=timestamp)
 
             if day == 1:
                 print("First day of the month, nothing to average yet")

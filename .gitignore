@@ -2,3 +2,8 @@
 *MSC*
 *RDPS*
 
+# no netcdf files
+*.nc
+
+# dont need the station list 
+allstn*
